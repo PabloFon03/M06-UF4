@@ -1,22 +1,25 @@
-import os
-from input import *
-from sql import SQL
-from user import User
-from product import Product
-
-
-def ClearConsole():
-    os.system('cls' if os.name == 'nt' else 'clear')
+from src.Tools.common import ClearConsole
+from src.Tools.input import *
+from src.Tools.sql import SQL
+from src.Models.user import User
+from src.Menus.userMenu import UserMenu
 
 
 def InitDB():
+    # Users Table
     sql.CreateTable(
         "users", "id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, name VARCHAR(64), surname VARCHAR(64), username VARCHAR(64), password VARCHAR(64), admin BIT")
+    # Products Table
+    sql.CreateTable(
+        "products", "id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, name VARCHAR(64), price FLOAT")
+    # Receipts Table
+    sql.CreateTable(
+        "receipts", "id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, userId INT NOT NULL, productId INT NOT NULL, price FLOAT")
+    # Admin User
     adminName = "admin"
     adminPass = "1234"
     if not User.UserExists(User, adminName, adminPass, sql):
-        adminUser = User()
-        adminUser.Fill((0, "", "", adminName, adminPass, True))
+        adminUser = User((0, "", "", adminName, adminPass, True))
         adminUser.Add(sql)
 
 
@@ -55,10 +58,26 @@ def AdminMenu(sql):
                 currentUser = CreateAccount(sql)
 
 
+ClearConsole()
 sql = SQL()
 if sql.IsConnected():
+    # Borrar esto
+    # Borrar esto
+    # Borrar esto
+    # Borrar esto
+    # Borrar esto
+    sql.RunCommand("DROP TABLE users")
+    # sql.RunCommand("DROP TABLE products")
+    sql.RunCommand("DROP TABLE receipts")
+    # Borrar esto
+    # Borrar esto
+    # Borrar esto
+    # Borrar esto
+    # Borrar esto
     InitDB()
     currentUser = None
+    menu = UserMenu()
+    menu.MainLoop(currentUser, sql)
     while currentUser is None:
         match AskNumber("[0] Iniciar Sesión\n[1] Registrar Nueva Cuenta\n", 0, 1):
             case 0:
@@ -66,8 +85,9 @@ if sql.IsConnected():
             case 1:
                 currentUser = CreateAccount(sql)
     if currentUser.IsAdmin():
-        pass
+        AdminMenu(sql)
     else:
-        pass
+        print("b")
 else:
     print("No se ha conseguido conectar con la base de datos.")
+print("Programa terminado.")

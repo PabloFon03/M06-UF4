@@ -3,7 +3,11 @@ import mysql.connector
 class SQL:
 
     def __init__(self):
-        self.__conn = mysql.connector.connect(host="localhost", user="root", password="", database="tienda")
+        self.__conn = None
+        try:
+            self.__conn = mysql.connector.connect(host="localhost", user="root", password="", database="tienda")
+        except:
+            pass
         self.__cursor = self.__conn.cursor(buffered=True) if self.__conn else None
 
     def IsConnected(self):

@@ -1,5 +1,3 @@
-from sql import *
-
 class Product:
     def __init__(self, id, name, price):
         self.__id = id
@@ -14,3 +12,5 @@ class Product:
     def Update(self, sql):
         values=(self.__name, self.__price, self.__id)
         sql.Update("products", "name = %s, price = %s", "id = %s", values)
+    def GetProducts(self, sql):
+        return sql.Select("products")

@@ -1,4 +1,4 @@
-from input import *
+from src.Tools.input import *
 
 
 class User:
@@ -21,12 +21,14 @@ class User:
         if data:
             self.Fill(data)
 
+    # Getters
     def GetID(self):
         return self.__id
 
     def IsAdmin(self):
         return self.__isAdmin
 
+    # Setters
     def SetName(self):
         self.__name = AskAlphaNum("Introduzca su nombre: ", 1, 64)
 
@@ -48,15 +50,15 @@ class User:
     # SQL Methods
     def Add(self, sql):
         values = (self.__name, self.__surname,
-                  self.__username, self.__password, self.__id)
+                  self.__username, self.__password, self.__isAdmin)
         self.__id = sql.Insert(
             "users", "name, surname, username, password, admin", "%s, %s, %s, %s, %s", values)
 
     def Update(self, sql):
         values = (self.__name, self.__surname,
-                  self.__username, self.__password, self.__id)
+                  self.__username, self.__password, self.__isAdmin, self.__id)
         sql.Update(
-            "users", "name = %s, surname = %s, username = %s, password = %s", "id = %s", values)
+            "users", "name = %s, surname = %s, username = %s, password = %s, admin = %s", "id = %s", values)
 
     def Delete(self, sql):
         sql.Delete("users", "id = %s", (self.__id,))
