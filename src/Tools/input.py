@@ -1,3 +1,6 @@
+import re
+
+
 def AskYesNo(question):
     while True:
         answer = input(question + " [Y/N] ").lower()
@@ -10,8 +13,21 @@ def AskYesNo(question):
 def AskNumber(question, min, max):
     while True:
         answer = input(question)
-        if answer.isdigit():
+        if answer.isdecimal():
             n = int(answer)
+            if n >= min and n <= max:
+                return n
+            else:
+                print(f"El número debe estar entre {min} y {max}.")
+        else:
+            print("La entrada no es un número válido.")
+
+
+def AskDecimalNumber(question, min, max):
+    while True:
+        answer = input(question)
+        if re.match(r"^\d+(?:\.\d+)?$", answer):
+            n = float(answer)
             if n >= min and n <= max:
                 return n
             else:
@@ -30,4 +46,3 @@ def AskAlphaNum(question, min, max):
                 print(f"La cadena debe medir entre {min} y {max} caracteres.")
         else:
             print("Sólo se permiten caracteres alfanuméricos.")
-

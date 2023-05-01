@@ -25,6 +25,15 @@ class User:
     def GetID(self):
         return self.__id
 
+    def GetName(self):
+        return self.__name
+
+    def GetSurname(self):
+        return self.__surname
+
+    def GetUsername(self):
+        return self.__username
+
     def IsAdmin(self):
         return self.__isAdmin
 
@@ -84,3 +93,9 @@ class User:
             return User(userData[0])
         else:
             return None
+
+    def GetUsers(self, sql):
+        users = []
+        for row in sql.Select("users"):
+            users.append(User(row))
+        return users
