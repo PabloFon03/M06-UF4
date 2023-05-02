@@ -40,6 +40,6 @@ class StartMenu:
                 case 1:
                     currentUser = self.__CreateAccount(StartMenu, sql)
         if currentUser.IsAdmin():
-            AdminMenu.MainLoop(AdminMenu, currentUser, sql)
+            AdminMenu.MainLoop(AdminMenu, sql)
         else:
             UserMenu.MainLoop(UserMenu, currentUser, sql)

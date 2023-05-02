@@ -62,6 +62,7 @@ class User:
                   self.__username, self.__password, self.__isAdmin)
         self.__id = sql.Insert(
             "users", "name, surname, username, password, admin", "%s, %s, %s, %s, %s", values)
+        print(self.__id)
 
     def Update(self, sql):
         values = (self.__name, self.__surname,

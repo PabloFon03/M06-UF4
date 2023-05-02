@@ -1,6 +1,7 @@
+from src.Tools.common import *
 from src.Tools.input import *
 from src.Models.product import Product
-from src.Tools.common import ClearConsole
+from src.Models.receipt import Receipt
 
 
 class UserMenu:
@@ -8,7 +9,7 @@ class UserMenu:
         ClearConsole()
         print("[Lista Productos]")
         for product in Product.GetProducts(Product, sql):
-            print(f"- {product.GetName()} ({product.GetPriceText()}€)")
+            print(f"- {product.GetName()} ({FormatPrice(product.GetPrice())})")
         input()
 
     def __BuyProducts(self, user, sql):
@@ -17,29 +18,38 @@ class UserMenu:
         keepBuying = True
         while keepBuying:
             ClearConsole()
+            print("[Comprar Producto]")
             for i in range(len(products)):
-                print(f"[{i}] {products[i].GetName()} ({products[i].GetPriceText()}€)")
+                print(
+                    f"[{i}] {products[i].GetName()} ({FormatPrice(products[i].GetPrice())})")
             shoppingCart.append(
                 products[AskNumber("Seleccione un producto: ", 0, len(products) - 1)])
             ClearConsole()
             print("[Carro Compra]")
             for item in shoppingCart:
-                print(f"- {item.GetName()} ({item.GetPriceText()}€)")
+                print(f"- {item.GetName()} ({FormatPrice(item.GetPrice())})")
             keepBuying = AskYesNo("Deseas seguir comprando?")
         for item in shoppingCart:
-            pass
+            Receipt((0, user.GetID(), item.GetID(), item.GetPrice())).Add(sql)
 
     def __ModifyUser(self, user, sql):
         ClearConsole()
+        print("[Modificar Datos]")
         print(f"Tu nombre es {user.GetName()}.")
         if AskYesNo("Deseas cambiarlo?"):
             user.SetName()
+        ClearConsole()
+        print("[Modificar Datos]")
         print(f"Tu apellido es {user.GetSurname()}.")
         if AskYesNo("Deseas cambiarlo?"):
             user.SetSurname()
+        ClearConsole()
+        print("[Modificar Datos]")
         print(f"Tu username es {user.GetUsername()}.")
         if AskYesNo("Deseas cambiarlo?"):
             user.SetUsername()
+        ClearConsole()
+        print("[Modificar Datos]")
         if AskYesNo("Deseas cambiar tu contraseña?"):
             user.SetPassword()
         user.Update(sql)

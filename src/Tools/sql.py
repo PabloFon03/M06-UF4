@@ -1,14 +1,17 @@
 import mysql.connector
 
+
 class SQL:
 
     def __init__(self):
         self.__conn = None
         try:
-            self.__conn = mysql.connector.connect(host="localhost", user="root", password="", database="tienda")
+            self.__conn = mysql.connector.connect(
+                host="localhost", user="root", password="", database="tienda")
         except:
             pass
-        self.__cursor = self.__conn.cursor(buffered=True) if self.__conn else None
+        self.__cursor = self.__conn.cursor(
+            buffered=True) if self.__conn else None
 
     def IsConnected(self):
         return self.__conn is not None
@@ -17,7 +20,7 @@ class SQL:
         if self.__conn:
             self.__conn.close()
 
-    def RunCommand(self, query, params = None):
+    def RunCommand(self, query, params=None):
         if self.__conn:
             if params:
                 self.__cursor.execute(query, params)
@@ -31,18 +34,20 @@ class SQL:
         else:
             print("No Connection")
             return None
-        
+
     def CreateTable(self, name, columns):
         return self.RunCommand(f"CREATE TABLE IF NOT EXISTS {name} ({columns})")
 
-    def Select(self, table, conditions = "1=1", params = None, columns = "*"):
+    def Select(self, table, conditions="1=1", params=None, columns="*"):
         return self.RunCommand(f"SELECT {columns} FROM {table} WHERE {conditions}", params)
 
-    def Update(self, table, columns, conditions = "1=1", params = None):
+    def Update(self, table, columns, conditions="1=1", params=None):
         return self.RunCommand(f"UPDATE {table} SET {columns} WHERE {conditions}", params)
 
-    def Insert(self, table, columns, values, params = None):
-        return self.RunCommand(f"INSERT INTO {table} ({columns}) VALUES ({values})", params)
-    
-    def Delete(self, table, conditions = "1=1", params = None):
+    def Insert(self, table, columns, values, params=None):
+        self.RunCommand(
+            f"INSERT INTO {table} ({columns}) VALUES ({values})", params)
+        return self.RunCommand("SELECT LAST_INSERT_ID()")[0][0]
+
+    def Delete(self, table, conditions="1=1", params=None):
         return self.RunCommand(f"DELETE FROM {table} WHERE {conditions}", params)

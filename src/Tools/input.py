@@ -26,7 +26,7 @@ def AskNumber(question, min, max):
 def AskDecimalNumber(question, min, max):
     while True:
         answer = input(question)
-        if re.match(r"^\d+(?:\.\d+)?$", answer):
+        if re.match(r"^\d+(\.\d+)?$", answer):
             n = float(answer)
             if n >= min and n <= max:
                 return n

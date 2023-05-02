@@ -24,32 +24,24 @@ class Product:
     def GetPrice(self):
         return self.__price
 
-    def GetPriceText(self):
-        return format(self.__price, ".2f")
-
     # Setters
-    def SetName(self):
-        self.__name = AskAlphaNum("Introduzca su nombre: ", 1, 64)
+    def SetName(self, sql):
+        nameExists = True
+        while nameExists:
+            name = AskAlphaNum("Introduzca el nombre del producto: ", 1, 64)
+            nameExists = Product.NameExists(Product, name, sql)
+            if nameExists:
+                print("Ya existe un producto con ese nombre.")
+        self.__name = name
 
-    def SetSurname(self):
-        self.__surname = AskAlphaNum("Introduzca su apellido: ", 1, 64)
-
-    def SetUsername(self, sql):
-        usernameExists = True
-        while usernameExists:
-            username = AskAlphaNum("Introduzca su username: ", 1, 64)
-            usernameExists = User.UsernameExists(User, username, sql)
-            if usernameExists:
-                print("Lo sentimos, ese username ya está registrado.")
-        self.__username = username
-
-    def SetPassword(self):
-        self.__password = AskAlphaNum("Introduzca su contraseña: ", 1, 64)
+    def SetPrice(self):
+        self.__price = AskDecimalNumber(
+            "Introduzca el precio del producto: ", 0.01, 99999999)
 
     # SQL Methods
     def Add(self, sql):
         values = (self.__name, self.__price)
-        self.__id = sql.Insert("users", "name, price", "%s, %s", values)
+        self.__id = sql.Insert("products", "name, price", "%s, %s", values)
 
     def Update(self, sql):
         values = (self.__name, self.__price, self.__id)
@@ -60,7 +52,7 @@ class Product:
 
     # Static Methods
     def NameExists(self, name, sql):
-        return len(sql.Select("users", "name = %s", (name,))) > 0
+        return len(sql.Select("products", "name = %s", (name,))) > 0
 
     def GetProducts(self, sql):
         products = []
