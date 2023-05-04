@@ -33,7 +33,8 @@ class Product:
         nameExists = True
         while nameExists:
             name = AskAlphaNum("Introduzca el nombre del producto: ", 1, 64)
-            nameExists = Product.NameExists(Product, name, sql)
+            nameExists = name != self.__name and Product.NameExists(
+                Product, name, sql)
             if nameExists:
                 print("Ya existe un producto con ese nombre.")
         self.__name = name
