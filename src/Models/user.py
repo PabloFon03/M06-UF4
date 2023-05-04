@@ -37,6 +37,9 @@ class User:
     def IsAdmin(self):
         return self.__isAdmin
 
+    def ToString(self):
+        return f"{self.__name} {self.__surname} ({self.__username})"
+
     # Setters
     def SetName(self):
         self.__name = AskAlphaNum("Introduzca su nombre: ", 1, 64)

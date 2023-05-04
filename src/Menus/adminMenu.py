@@ -20,7 +20,7 @@ class AdminMenu:
         products = Product.GetProducts(Product, sql)
         for i in range(len(products)):
             print(
-                f"[{i}] {products[i].GetName()} ({FormatPrice(products[i].GetPrice())})")
+                f"[{i}] {products[i].ToString()}")
         product = products[AskNumber(
             "Seleccione el producto a modificar: ", 0, len(products) - 1)]
         ClearConsole()
@@ -40,29 +40,39 @@ class AdminMenu:
         print("[Eliminar usuario]")
         users = User.GetUsers(User, sql)
         for i in range(len(users)):
-            print(
-                f"[{i}] {users[i].GetName()} {users[i].GetSurname()} ({users[i].GetUsername()})")
+            print(f"[{i}] {users[i].ToString()}")
         user = users[AskNumber(
             "Seleccione el usuario a eliminar: ", 0, len(users) - 1)]
         # Receipt.DeleteAllUserReceipts(user.GetID())
         user.Delete(sql)
 
-    def ShowReceipts(self, receipts, sectionName):
+    def ShowReceipts(self, receipts, sectionName, sql):
         ClearConsole()
         print(sectionName)
         sum = 0
         for receipt in receipts:
             sum += receipt.GetPrice()
         print(f"Facturación Total: {FormatPrice(sum)}")
-        if AskNumber("Mostar Facturas?"):
-            for receipt in receipts:
-                print("--------------------------------------")
-                user = receipt.GetUser()
-                print("- Usuario: " + f"{user.GetName()} {user.GetSurname()} ({user.GetUsername()})" if user else "(Usuario Eliminado)")
-                print("--------------------------------------")
+        if len(receipts) > 0:
+            if AskYesNo("Mostar Facturas?"):
+                spacing = "----------------------------------------------------------------------------"
+                for receipt in receipts:
+                    print(spacing)
+                    user = receipt.GetUser(sql)
+                    print("- Usuario: " + user.ToString()
+                          if user else "(Usuario Eliminado)")
+                    product = receipt.GetProduct(sql)
+                    print(
+                        "- Producto: " + product.ToString() if product else "(Producto Eliminado)")
+                    print(f"- Importe: {FormatPrice(receipt.GetPrice())}")
+                    print(spacing)
+        else:
+            print("No hay facturas que mostrar.")
+        input()
 
     def ShowAllReceipts(self, sql):
-        self.ShowReceipts(AdminMenu, Receipt.GetAllReceipts(Receipt, sql), "[Calcular Facturación (Total)]")
+        self.ShowReceipts(AdminMenu, Receipt.GetAllReceipts(
+            Receipt, sql), "[Calcular Facturación (Total)]", sql)
 
     def ShowUserReceipts(self, sql):
         ClearConsole()
@@ -89,4 +99,6 @@ class AdminMenu:
                 case 2:
                     self.DeleteUser(AdminMenu, sql)
                 case 3:
-                    self.ShowReceipts(AdminMenu, sql)
+                    self.ShowAllReceipts(AdminMenu, sql)
+                case 3:
+                    self.ShowAllReceipts(AdminMenu, sql)

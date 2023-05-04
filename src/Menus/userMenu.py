@@ -47,7 +47,7 @@ class UserMenu:
         print("[Modificar Datos]")
         print(f"Tu username es {user.GetUsername()}.")
         if AskYesNo("Deseas cambiarlo?"):
-            user.SetUsername()
+            user.SetUsername(sql)
         ClearConsole()
         print("[Modificar Datos]")
         if AskYesNo("Deseas cambiar tu contraseña?"):

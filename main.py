@@ -31,9 +31,9 @@ if sql.IsConnected():
     # Borrar esto
     # Borrar esto
     # Borrar esto
-    sql.RunCommand("DROP TABLE users")
+    # sql.RunCommand("DROP TABLE users")
     # sql.RunCommand("DROP TABLE products")
-    sql.RunCommand("DROP TABLE receipts")
+    # sql.RunCommand("DROP TABLE receipts")
     # Borrar esto
     # Borrar esto
     # Borrar esto

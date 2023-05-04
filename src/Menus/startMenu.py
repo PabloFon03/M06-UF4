@@ -24,7 +24,7 @@ class StartMenu:
         user = User()
         user.SetName()
         user.SetSurname()
-        user.SetUsername()
+        user.SetUsername(sql)
         user.SetPassword()
         user.Add(sql)
         return user

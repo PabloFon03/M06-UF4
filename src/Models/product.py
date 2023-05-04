@@ -1,4 +1,5 @@
 from src.Tools.input import *
+from src.Tools.common import FormatPrice
 
 
 class Product:
@@ -23,6 +24,9 @@ class Product:
 
     def GetPrice(self):
         return self.__price
+
+    def ToString(self):
+        return f"{self.__name} ({FormatPrice(self.__price)})"
 
     # Setters
     def SetName(self, sql):
@@ -53,6 +57,13 @@ class Product:
     # Static Methods
     def NameExists(self, name, sql):
         return len(sql.Select("products", "name = %s", (name,))) > 0
+
+    def GetProductByID(self, id, sql):
+        userData = sql.Select("products", "id = %s", (id,))
+        if len(userData) > 0:
+            return Product(userData[0])
+        else:
+            return None
 
     def GetProducts(self, sql):
         products = []

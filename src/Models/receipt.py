@@ -24,11 +24,11 @@ class Receipt:
     def GetPrice(self):
         return self.__price
     
-    def GetUser(self):
-        return User.GetUserByID(User, self.__userId)
+    def GetUser(self, sql):
+        return User.GetUserByID(User, self.__userId, sql)
     
-    def GetProduct(self):
-        return Product.GetProducts(Product, self.__productId)
+    def GetProduct(self, sql):
+        return Product.GetProductByID(Product, self.__productId, sql)
 
     # SQL Methods
     def Add(self, sql):
