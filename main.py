@@ -19,7 +19,6 @@ def InitDB():
     adminPass = "1234"
     if not User.UserExists(User, adminName, adminPass, sql):
         User((0, "", "", adminName, adminPass, True)).Add(sql)
-        User((0, "test", "2", "a", "1234", False)).Add(sql)
 
 
 ClearConsole()

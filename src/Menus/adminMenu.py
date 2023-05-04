@@ -66,9 +66,10 @@ class AdminMenu:
                         "- Producto: " + product.ToString() if product else "(Producto Eliminado)")
                     print(f"- Importe: {FormatPrice(receipt.GetPrice())}")
                     print(spacing)
+                input()
         else:
             print("No hay facturas que mostrar.")
-        input()
+            input()
 
     def ShowAllReceipts(self, sql):
         self.ShowReceipts(AdminMenu, Receipt.GetAllReceipts(
@@ -77,12 +78,23 @@ class AdminMenu:
     def ShowUserReceipts(self, sql):
         ClearConsole()
         print("[Calcular Facturación (Usuario)]")
-        receipts = Receipt.GetAllUserReceipts(Receipt, sql)
-        sum = 0
-        for receipt in receipts:
-            sum += receipt.GetPrice()
-        print(f"Facturación Total: {FormatPrice(sum)}")
-        input()
+        users = User.GetUsers(User, sql)
+        for i in range(len(users)):
+            print(f"[{i}] {users[i].ToString()}")
+        user = users[AskNumber("Seleccione un usuario: ", 0, len(users) - 1)]
+        self.ShowReceipts(AdminMenu, Receipt.GetAllUserReceipts(
+            Receipt, user.GetID(), sql), "[Calcular Facturación (Total)]", sql)
+
+    def ShowProductReceipts(self, sql):
+        ClearConsole()
+        print("[Calcular Facturación (Producto)]")
+        products = Product.GetProducts(Product, sql)
+        for i in range(len(products)):
+            print(f"[{i}] {products[i].ToString()}")
+        product = products[AskNumber(
+            "Seleccione un producto: ", 0, len(products) - 1)]
+        self.ShowReceipts(AdminMenu, Receipt.GetAllProductReceipts(
+            Receipt, product.GetID(), sql), "[Calcular Facturación (Producto)]", sql)
 
     def MainLoop(self, sql):
         option = -1
@@ -100,5 +112,7 @@ class AdminMenu:
                     self.DeleteUser(AdminMenu, sql)
                 case 3:
                     self.ShowAllReceipts(AdminMenu, sql)
-                case 3:
-                    self.ShowAllReceipts(AdminMenu, sql)
+                case 4:
+                    self.ShowUserReceipts(AdminMenu, sql)
+                case 5:
+                    self.ShowProductReceipts(AdminMenu, sql)
