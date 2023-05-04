@@ -2,7 +2,6 @@ from src.Tools.common import ClearConsole
 from src.Tools.sql import SQL
 from src.Models.user import User
 from src.Menus.startMenu import StartMenu
-from src.Tools.input import AskDecimalNumber
 
 
 def InitDB():
@@ -26,19 +25,6 @@ def InitDB():
 ClearConsole()
 sql = SQL()
 if sql.IsConnected():
-    # Borrar esto
-    # Borrar esto
-    # Borrar esto
-    # Borrar esto
-    # Borrar esto
-    # sql.RunCommand("DROP TABLE users")
-    # sql.RunCommand("DROP TABLE products")
-    # sql.RunCommand("DROP TABLE receipts")
-    # Borrar esto
-    # Borrar esto
-    # Borrar esto
-    # Borrar esto
-    # Borrar esto
     InitDB()
     StartMenu.MainLoop(StartMenu, sql)
 else:
