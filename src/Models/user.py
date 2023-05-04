@@ -3,7 +3,7 @@ from src.Tools.input import *
 
 class User:
 
-    def Fill(self, row):
+    def __Fill(self, row):
         self.__id = row[0]
         self.__name = row[1]
         self.__surname = row[2]
@@ -19,7 +19,7 @@ class User:
         self.__password = ""
         self.__isAdmin = False
         if data:
-            self.Fill(data)
+            self.__Fill(data)
 
     # Getters
     def GetID(self):
@@ -66,7 +66,6 @@ class User:
                   self.__username, self.__password, self.__isAdmin)
         self.__id = sql.Insert(
             "users", "name, surname, username, password, admin", "%s, %s, %s, %s, %s", values)
-        print(self.__id)
 
     def Update(self, sql):
         values = (self.__name, self.__surname,

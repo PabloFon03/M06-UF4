@@ -26,6 +26,7 @@ sql = SQL()
 if sql.IsConnected():
     InitDB()
     StartMenu.MainLoop(StartMenu, sql)
+    sql.DisconnectFromDB()
 else:
     print("No se ha conseguido conectar con la base de datos.")
 print("Programa terminado.")

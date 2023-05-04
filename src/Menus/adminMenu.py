@@ -6,7 +6,7 @@ from src.Models.receipt import Receipt
 
 
 class AdminMenu:
-    def AddProduct(self, sql):
+    def __AddProduct(self, sql):
         ClearConsole()
         print("[Crear Producto]")
         product = Product()
@@ -14,7 +14,7 @@ class AdminMenu:
         product.SetPrice()
         product.Add(sql)
 
-    def ModifyProduct(self, sql):
+    def __ModifyProduct(self, sql):
         ClearConsole()
         print("[Modificar Producto]")
         products = Product.GetProducts(Product, sql)
@@ -35,7 +35,7 @@ class AdminMenu:
             product.SetPrice()
         product.Update(sql)
 
-    def DeleteUser(self, sql):
+    def __DeleteUser(self, sql):
         ClearConsole()
         print("[Eliminar usuario]")
         users = User.GetUsers(User, sql)
@@ -46,7 +46,7 @@ class AdminMenu:
         # Receipt.DeleteAllUserReceipts(user.GetID())
         user.Delete(sql)
 
-    def ShowReceipts(self, receipts, sectionName, sql):
+    def __ShowReceipts(self, receipts, sectionName, sql):
         ClearConsole()
         print(sectionName)
         sum = 0
@@ -54,7 +54,7 @@ class AdminMenu:
             sum += receipt.GetPrice()
         print(f"Facturación Total: {FormatPrice(sum)}")
         if len(receipts) > 0:
-            if AskYesNo("Mostar Facturas?"):
+            if AskYesNo("Mostrar Facturas?"):
                 spacing = "----------------------------------------------------------------------------"
                 for receipt in receipts:
                     print(spacing)
@@ -71,21 +71,21 @@ class AdminMenu:
             print("No hay facturas que mostrar.")
             input()
 
-    def ShowAllReceipts(self, sql):
-        self.ShowReceipts(AdminMenu, Receipt.GetAllReceipts(
+    def __ShowAllReceipts(self, sql):
+        self.__ShowReceipts(AdminMenu, Receipt.GetAllReceipts(
             Receipt, sql), "[Calcular Facturación (Total)]", sql)
 
-    def ShowUserReceipts(self, sql):
+    def __ShowUserReceipts(self, sql):
         ClearConsole()
         print("[Calcular Facturación (Usuario)]")
         users = User.GetUsers(User, sql)
         for i in range(len(users)):
             print(f"[{i}] {users[i].ToString()}")
         user = users[AskNumber("Seleccione un usuario: ", 0, len(users) - 1)]
-        self.ShowReceipts(AdminMenu, Receipt.GetAllUserReceipts(
+        self.__ShowReceipts(AdminMenu, Receipt.GetAllUserReceipts(
             Receipt, user.GetID(), sql), "[Calcular Facturación (Total)]", sql)
 
-    def ShowProductReceipts(self, sql):
+    def __ShowProductReceipts(self, sql):
         ClearConsole()
         print("[Calcular Facturación (Producto)]")
         products = Product.GetProducts(Product, sql)
@@ -93,7 +93,7 @@ class AdminMenu:
             print(f"[{i}] {products[i].ToString()}")
         product = products[AskNumber(
             "Seleccione un producto: ", 0, len(products) - 1)]
-        self.ShowReceipts(AdminMenu, Receipt.GetAllProductReceipts(
+        self.__ShowReceipts(AdminMenu, Receipt.GetAllProductReceipts(
             Receipt, product.GetID(), sql), "[Calcular Facturación (Producto)]", sql)
 
     def MainLoop(self, sql):
@@ -105,14 +105,14 @@ class AdminMenu:
                 "[0] Crear Producto\n[1] Modificar Producto\n[2] Eliminar Usuario\n[3] Calcular Facturación (Total)\n[4] Calcular Facturación (Usuario)\n[5] Calcular Facturación (Producto)\n[6] Salir\n", 0, 6)
             match option:
                 case 0:
-                    self.AddProduct(AdminMenu, sql)
+                    self.__AddProduct(AdminMenu, sql)
                 case 1:
-                    self.ModifyProduct(AdminMenu, sql)
+                    self.__ModifyProduct(AdminMenu, sql)
                 case 2:
-                    self.DeleteUser(AdminMenu, sql)
+                    self.__DeleteUser(AdminMenu, sql)
                 case 3:
-                    self.ShowAllReceipts(AdminMenu, sql)
+                    self.__ShowAllReceipts(AdminMenu, sql)
                 case 4:
-                    self.ShowUserReceipts(AdminMenu, sql)
+                    self.__ShowUserReceipts(AdminMenu, sql)
                 case 5:
-                    self.ShowProductReceipts(AdminMenu, sql)
+                    self.__ShowProductReceipts(AdminMenu, sql)

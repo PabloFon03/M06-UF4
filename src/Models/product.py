@@ -3,7 +3,7 @@ from src.Tools.common import FormatPrice
 
 
 class Product:
-    def Fill(self, row):
+    def __Fill(self, row):
         self.__id = row[0]
         self.__name = row[1]
         self.__price = row[2]
@@ -13,7 +13,7 @@ class Product:
         self.__name = ""
         self.__price = 0
         if data:
-            self.Fill(data)
+            self.__Fill(data)
 
     # Getters
     def GetID(self):
@@ -60,9 +60,9 @@ class Product:
         return len(sql.Select("products", "name = %s", (name,))) > 0
 
     def GetProductByID(self, id, sql):
-        userData = sql.Select("products", "id = %s", (id,))
-        if len(userData) > 0:
-            return Product(userData[0])
+        productData = sql.Select("products", "id = %s", (id,))
+        if len(productData) > 0:
+            return Product(productData[0])
         else:
             return None
 
