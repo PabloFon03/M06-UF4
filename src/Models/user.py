@@ -51,7 +51,8 @@ class User:
         usernameExists = True
         while usernameExists:
             username = AskAlphaNum("Introduzca su username: ", 1, 64)
-            usernameExists = User.UsernameExists(User, username, sql)
+            usernameExists = username != self.__username and User.UsernameExists(
+                User, username, sql)
             if usernameExists:
                 print("Lo sentimos, ese username ya está registrado.")
         self.__username = username
